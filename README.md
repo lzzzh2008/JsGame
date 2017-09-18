@@ -1,1 +1,1 @@
-this is a jsgame.
+this is a JsGame.
