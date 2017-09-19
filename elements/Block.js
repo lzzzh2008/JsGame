@@ -1,6 +1,6 @@
 var Block = function(position) {
     var p = position
-    var image = imageFromPath('block.png')
+    var image = imageFromPath('./img/block.png')
     var o = {
         image: image,
         x: p[0],
