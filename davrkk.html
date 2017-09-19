@@ -83,7 +83,36 @@ var Ball = function() {
     o.fire = function() {
         o.fired = true
     }
+    o.rebound = function() {
+        o.speedY *= -1
+    }
 
+    return o
+}
+
+var reactAction = function(a, b) {
+    if (b.y > a.y && b.y < a.y + a.image.height) {
+        if (b.x > a.x && b.x < a.x + a.image.width) {
+            return true
+        }
+    }
+    return false
+}
+
+var Block = function() {
+    var image = imageFromPath('block.png')
+    var o = {
+        image: image,
+        x: 0,
+        y: 0,
+        alive: true,
+    }
+    o.kill = function() {
+        o.alive = false
+    }
+    o.collide = function(ball) {
+        return o.alive && (reactAction(o, ball) || reactAction(ball, o))
+    }
     return o
 }
 
@@ -137,7 +166,14 @@ var __main = function () {
     var game = GuaGame()
     var paddle = Paddle()
     var ball = Ball()
-
+    var blocks = []
+    for (var i = 0; i < 5; i++) {
+        var b = Block()
+        //设置坐标
+        b.x = i * 120
+        b.y = 50
+        blocks.push(b)
+    }
     game.registerAction('a', function(){
         paddle.moveLeft()
     })
@@ -150,13 +186,29 @@ var __main = function () {
     game.update = function() {
         ball.move()
         if (paddle.collide(ball)) {
-            ball.speedY *= -1
+            ball.rebound ()
+        }
+        //判断ball和block相撞
+        for (var i = 0; i < blocks.length; i++) {
+            var block = blocks[i]
+            if (block.collide(ball)) {
+                block.kill()
+                ball.rebound()
+            }
         }
     }
     game.draw = function() {
         //draw
         game.drawImage(paddle)
         game.drawImage(ball)
+        for (var i = 0; i < blocks.length; i++) {
+            var block = blocks[i]
+            if (block.alive) {
+                game.drawImage(block)
+
+            }
+        }
+
     }
 }
 __main()
