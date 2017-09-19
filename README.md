@@ -1,4 +1,4 @@
-###A block-hitting game.
+A block-hitting game.
 ***
 ## start
 >run game `davrkk.html`
