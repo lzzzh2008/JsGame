@@ -1,12 +1,12 @@
 var Ball = function(game) {
     var o = game.imageByName('ball')
 
-        o.x =  100
-        o.y = 150
+        o.x =  130
+        o.y = 240
         // height: 63,
         // width: 87,
-        o.speedX = 8
-        o.speedY = 8
+        o.speedX = 6
+        o.speedY = -8
         o.fired = false
     o.move = function() {
         if (o.fired) {
