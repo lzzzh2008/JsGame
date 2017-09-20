@@ -47,6 +47,7 @@ var __main = function () {
         var score = 0
 
         blocks = loadLevel(1, game)
+
         game.registerAction('a', function(){
             paddle.moveLeft()
         })
@@ -76,7 +77,35 @@ var __main = function () {
                 }
             }
         }
+        //mouse  event
+        var  enableDrag = false
+        game.canvas.addEventListener('mousedown', function(event) {
+            var x = event.offsetX
+            var y = event.offsetY
+            //判断是否点中ball
+            if (ball.hasPoint(x, y)) {
+                //设置拖拽状态
+                enableDrag = true
+            }
+        })
+        game.canvas.addEventListener('mousemove', function(event) {
+            var x = event.offsetX
+            var y = event.offsetY
+            if (enableDrag) {
+                ball.x = x
+                ball.y = y
+            }
+        })
+        game.canvas.addEventListener('mouseup', function(event) {
+            var x = event.offsetX
+            var y = event.offsetY
+            enableDrag = false
+        })
+
         game.draw = function() {
+            //画背景
+            game.context.fillStyle = "lightblue"
+            game.context.fillRect(0, 0, 400, 300)
             //draw
             game.drawImage(paddle)
             game.drawImage(ball)
@@ -92,6 +121,7 @@ var __main = function () {
         }
     })
     enableDebugMode(true, game)
+
 
 }
 __main()

@@ -13,19 +13,24 @@ var Paddle = function(game) {
     o.y = 250
     o.speed = 15
     var paddle = o
-    o.moveLeft = function() {
-        if (o.x > 0) {
-            paddle.x -= paddle.speed
+    o.move = function (x) {
+        if (x < 0) {
+            x = 0
         }
+        if (x > 400 - o.w) {
+            x = 400 - o.w
+        }
+        o.x = x
+    }
+    o.moveLeft = function() {
+        o.move(paddle.x - paddle.speed)
     }
     o.moveRight = function() {
-        if (o.x + o.image.width < 400) {
-            paddle.x += paddle.speed
-        }
+        o.move(paddle.x + paddle.speed)
     }
     o.collide = function(ball) {
         if (ball.y + ball.image.height > o.y) {
-            if ((ball.x > o.x && ball.x < o.x + o.image.width)||(ball.x < o.x && ball.x + ball.image.width > o.x)) {
+            if ((ball.x > o.x && ball.x < o.x + o.w)||(ball.x < o.x && ball.x + ball.image.width > o.x)) {
                 log('bingo')
                 return true
             }
