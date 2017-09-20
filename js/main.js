@@ -1,6 +1,6 @@
 var loadLevel = function(n, game) {
     n = n - 1
-    var level = levels[n]
+    var level = levels()
     var blocks = []
     for (var i = 0; i < level.length; i++) {
         var p = level[i]
