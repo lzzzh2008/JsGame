@@ -1,5 +1,6 @@
 var GuaGame = function(images, runCallback) {
     var g = {
+        scene: null,
         actions: {},
         keydowns: {},
         images: {},
@@ -20,7 +21,14 @@ var GuaGame = function(images, runCallback) {
     window.addEventListener('keyup', function(event){
         g.keydowns[event.key] = false
     })
-    //
+    //update
+    g.update = function() {
+        g.scene.update()
+    }
+    //draw
+    g.draw = function() {
+        g.scene.draw()
+    }
     g.registerAction = function(key,callback) {
         g.actions[key] = callback
     }
@@ -62,9 +70,7 @@ var GuaGame = function(images, runCallback) {
         }
     }
     g.imageByName = function(name) {
-        log(name, g)
         var img = g.images[name]
-        log(img)
         var image = {
             w: img.width,
             h: img.height,
@@ -72,12 +78,19 @@ var GuaGame = function(images, runCallback) {
         }
         return image
     }
-    g.run = function() {
-        runCallback(g)
+    g.runWithScene = function(scene) {
+        g.scene = scene
         setTimeout(function (){
             //events
             runloop()
         }, 1000/fps)
+    }
+    g.replaceScene = function(scene) {
+        g.scene = scene
+    }
+    g.run = function(scene) {
+        runCallback(g)
+
     }
 
     return g

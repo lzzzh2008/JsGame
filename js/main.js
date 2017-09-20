@@ -9,13 +9,13 @@ var loadLevel = function(n, game) {
     }
     return blocks
 }
-var blocks = []
 var enableDebugMode = function(enable, game) {
     if (!enable) {
         return
     }
     window.paused = false
     window.addEventListener('keydown', function(event) {
+        log(event)
         var k = event.key
         if (k == 'p') {
             paused = !paused
@@ -39,86 +39,10 @@ var __main = function () {
         paddle: 'img/paddle.png',
     }
 
-    var game = GuaGame(images, function(g){
-        // console.log(g.images)
-        var paddle = Paddle(game)
-        var ball = Ball(game)
 
-        var score = 0
-
-        blocks = loadLevel(1, game)
-
-        game.registerAction('a', function(){
-            paddle.moveLeft()
-        })
-        game.registerAction('d', function(){
-            paddle.moveRight()
-        })
-        game.registerAction('f', function(){
-            ball.fire()
-        })
-
-
-        game.update = function() {
-            if (paused) {
-                return
-            }
-            ball.move()
-            if (paddle.collide(ball)) {
-                ball.rebound ()
-            }
-            //判断ball和block相撞
-            for (var i = 0; i < blocks.length; i++) {
-                var block = blocks[i]
-                if (block.collide(ball)) {
-                    block.kill()
-                    score += 100
-                    ball.rebound()
-                }
-            }
-        }
-        //mouse  event
-        var  enableDrag = false
-        game.canvas.addEventListener('mousedown', function(event) {
-            var x = event.offsetX
-            var y = event.offsetY
-            //判断是否点中ball
-            if (ball.hasPoint(x, y)) {
-                //设置拖拽状态
-                enableDrag = true
-            }
-        })
-        game.canvas.addEventListener('mousemove', function(event) {
-            var x = event.offsetX
-            var y = event.offsetY
-            if (enableDrag) {
-                ball.x = x
-                ball.y = y
-            }
-        })
-        game.canvas.addEventListener('mouseup', function(event) {
-            var x = event.offsetX
-            var y = event.offsetY
-            enableDrag = false
-        })
-
-        game.draw = function() {
-            //画背景
-            game.context.fillStyle = "lightblue"
-            game.context.fillRect(0, 0, 400, 300)
-            //draw
-            game.drawImage(paddle)
-            game.drawImage(ball)
-            for (var i = 0; i < blocks.length; i++) {
-                var block = blocks[i]
-                if (block.alive) {
-                    game.drawImage(block)
-
-                }
-            }
-            //draw labels
-            game.context.fillText('分数:' + score, 320, 20)
-        }
+    var game = GuaGame(images, function(g) {
+        var s = Scene(g)
+        g.runWithScene(s)
     })
     enableDebugMode(true, game)
 
