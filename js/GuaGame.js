@@ -1,7 +1,8 @@
-var GuaGame = function() {
+var GuaGame = function(images, runCallback) {
     var g = {
         actions: {},
         keydowns: {},
+        images: {},
     }
     var canvas = e('#id-canvas')
     var context = canvas.getContext('2d')
@@ -45,10 +46,39 @@ var GuaGame = function() {
             runloop()
         }, 1000/fps)
     }
+    var loads = []
+    var names = Object.keys(images)
+    for (var i = 0; i < names.length; i++) {
+        let name = names[i]
+        var path = images[name]
+        let img = new Image()
+        img.src = path
+        img.onload = function() {
+            g.images[name] = img
+            loads.push(1)
+            if (loads.length == names.length) {
+                g.run()
+            }
+        }
+    }
+    g.imageByName = function(name) {
+        log(name, g)
+        var img = g.images[name]
+        log(img)
+        var image = {
+            w: img.width,
+            h: img.height,
+            image: img,
+        }
+        return image
+    }
+    g.run = function() {
+        runCallback(g)
+        setTimeout(function (){
+            //events
+            runloop()
+        }, 1000/fps)
+    }
 
-    setTimeout(function (){
-        //events
-        runloop()
-    }, 1000/fps)
     return g
 }
