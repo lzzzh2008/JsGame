@@ -15,7 +15,6 @@ var enableDebugMode = function(enable, game) {
     }
     window.paused = false
     window.addEventListener('keydown', function(event) {
-        log(event)
         var k = event.key
         if (k == 'p') {
             paused = !paused

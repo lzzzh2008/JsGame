@@ -34,8 +34,7 @@ var Scene = function(game) {
 
             }
         }
-        //draw labels
-        game.context.fillText('分数:' + score, 320, 20)
+
     }
 
     s.update = function() {
@@ -57,9 +56,20 @@ var Scene = function(game) {
             if (block.collide(ball)) {
                 block.kill()
                 score += 100
+                s.updateScore(score)
                 ball.rebound()
             }
         }
+    }
+    s.updateScore = function(score) {
+        var scoreLabel = e("#id-div-score")
+        if (scoreLabel != undefined) {
+            scoreLabel.remove()
+        }
+        var html = `<div class="panel-body" id="id-div-score">得分：${score}</div>`
+        e("#id-div-scorePanel").insertAdjacentHTML('beforeend', html)
+        log(score)
+
     }
     //mouse  event
     var  enableDrag = false
