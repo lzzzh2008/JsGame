@@ -3,14 +3,17 @@ var SceneEnd = function(game) {
         game: game,
 
     }
-
+    game.registerAction('r', function() {
+        var s = Scene(game)
+        game.replaceScene(s)
+    })
     s.draw = function() {
         //draw labels
-        game.context.fillText('游戏结束', 100, 200)
+        game.context.fillText('游戏结束，按R重新开始', 100, 200)
     }
 
     s.update = function() {
-        
+
     }
     //mouse  event
     var  enableDrag = false

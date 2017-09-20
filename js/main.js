@@ -41,7 +41,7 @@ var __main = function () {
 
 
     var game = GuaGame(images, function(g) {
-        var s = Scene(g)
+        var s = new SceneTitle(g)
         g.runWithScene(s)
     })
     enableDebugMode(true, game)
