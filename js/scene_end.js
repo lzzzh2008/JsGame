@@ -5,6 +5,7 @@ var SceneEnd = function(game) {
     }
     game.registerAction('r', function() {
         var s = Scene(game)
+        game.score = 0
         game.replaceScene(s)
     })
     s.draw = function() {

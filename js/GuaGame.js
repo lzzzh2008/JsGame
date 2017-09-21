@@ -4,6 +4,8 @@ var GuaGame = function(images, runCallback) {
         actions: {},
         keydowns: {},
         images: {},
+        score: 0,
+        level: 1,
     }
     var canvas = e('#id-canvas')
     var context = canvas.getContext('2d')

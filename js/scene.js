@@ -6,9 +6,11 @@ var Scene = function(game) {
     var paddle = Paddle(game)
     var ball = Ball(game)
 
-    var score = 0
+    // var score = 0
 
     var blocks = loadLevel(1, game)
+
+    var restBlocks = 0
 
     game.registerAction('a', function(){
         paddle.moveLeft()
@@ -54,21 +56,61 @@ var Scene = function(game) {
         for (var i = 0; i < blocks.length; i++) {
             var block = blocks[i]
             if (block.collide(ball)) {
+
                 block.kill()
-                score += 100
-                s.updateScore(score)
+                restBlocks += 1
+                s.nextScene()
+                //变速
+                s.speedUp(0.2)
+                //计算得分
+                game.score += 100
+                s.updateScore()
+
+
                 ball.rebound()
             }
+            // if (i == blocks.length - 1) {
+            //     var next = new SceneNext(game)
+            //     game.replaceScene(next)
+            // }
         }
     }
-    s.updateScore = function(score) {
+    s.blockLifes = function() {
+        var lifes = 0
+        for (var i = 0; i < blocks.length; i++) {
+            lifes += blocks[i].lifes
+        }
+        return lifes
+    }
+    var lifes = s.blockLifes()
+    s.nextScene = function() {
+
+        if (restBlocks == lifes) {
+            game.level += 1
+            var nextS = Scene(game)
+            game.replaceScene(nextS)
+        }
+    }
+
+    s.speedUp = function(speedMultiple) {
+        if (ball.speedX > 9 || ball.speedX < -9) {
+            return
+        }
+        ball.speedX = ball.speedX > 0 ? ball.speedX + speedMultiple :  ball.speedX - speedMultiple
+        ball.speedY = ball.speedY > 0 ? ball.speedY + speedMultiple :  ball.speedY - speedMultiple
+        // log("speed ball",ball.speedX)
+    }
+    s.updateScore = function() {
         var scoreLabel = e("#id-div-score")
         if (scoreLabel != undefined) {
             scoreLabel.remove()
         }
-        var html = `<div class="panel-body" id="id-div-score">得分：${score}</div>`
+        var html = `<div class="panel-body" id="id-div-score">
+            <p>得分：${game.score}</p>
+            <br/>
+            <p>第${game.level}关</p>
+        </div>`
         e("#id-div-scorePanel").insertAdjacentHTML('beforeend', html)
-        log(score)
 
     }
     //mouse  event
