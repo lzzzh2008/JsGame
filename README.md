@@ -1,7 +1,7 @@
 A block-hitting game.
 ***
 ## start
->run game `davrkk.html`
+>run game [Demo](https://lzzzh2008.github.io/JsGame/开始男人的游戏)
 ## control
 * press 'a' or 'd' to move paddle left&right
 * press 'f' to fire the ball
